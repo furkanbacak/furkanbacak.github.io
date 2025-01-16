@@ -22,18 +22,30 @@
   --button-background-light: #f9f9f9;
 }
 
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
 /* Global Styles */
 body {
-  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 320px;
-  min-height: 100vh;
   background-color: var(--background-dark);
   color: var(--text-light);
   font-family: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
