@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Landing page for Furkan Bacak's personal website.">
+    <meta name="description" content="Minimalistic and modern landing page">
     <title>Furkan Bacak</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header class="navbar">
         <div class="container">
-            <h1>Furkan Bacak</h1>
+            <h1 class="logo">Furkan Bacak</h1>
             <nav>
                 <a href="#about">About</a>
                 <a href="#features">Features</a>
@@ -20,35 +22,39 @@
     </header>
 
     <section class="hero">
-        <h1>Welcome to My Website</h1>
-        <p>Discover my projects, skills, and journey.</p>
-        <a href="#about" class="cta-button">Learn More</a>
+        <div class="container">
+            <h1>Welcome to My Minimalistic Website</h1>
+            <p>Discover projects, insights, and more with a clean, modern design.</p>
+            <a href="#about" class="cta-button">Learn More</a>
+        </div>
     </section>
 
-    <section id="about" class="about">
+    <section id="about" class="section">
         <h2>About Me</h2>
-        <p>Hi! I’m Furkan, a developer passionate about creating meaningful web experiences. This website showcases my work and interests.</p>
+        <p>
+            I’m Furkan, a developer and creator passionate about building intuitive and beautiful web experiences.
+        </p>
     </section>
 
-    <section id="features" class="features">
-        <h2>What I Do</h2>
-        <div class="feature">
-            <h3>Web Development</h3>
-            <p>Building responsive and fast websites.</p>
-        </div>
-        <div class="feature">
-            <h3>Content Creation</h3>
-            <p>Writing blogs and creating engaging content.</p>
-        </div>
-        <div class="feature">
-            <h3>Open Source</h3>
-            <p>Contributing to open-source projects to give back to the community.</p>
+    <section id="features" class="section">
+        <h2>Features</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Simple Design</h3>
+                <p>Clean and distraction-free layout.</p>
+            </div>
+            <div class="feature">
+                <h3>Responsive</h3>
+                <p>Optimized for all devices, big or small.</p>
+            </div>
+            <div class="feature">
+                <h3>Fast Loading</h3>
+                <p>Lightweight and efficient design.</p>
+            </div>
         </div>
     </section>
 
-    <footer id="contact">
-        <p>Contact me at: <a href="mailto:furkanbacak97@gmail.com">furkanbacak97@gmail.com</a></p>
-        <p>Follow me: <a href="#">Twitter</a> | <a href="https://www.linkedin.com/in/furkanbacak/">LinkedIn</a></p>
+    <footer class="footer">
         <p>© 2025 Furkan Bacak. All rights reserved.</p>
     </footer>
 </body>
