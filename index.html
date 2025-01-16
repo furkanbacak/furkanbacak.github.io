@@ -3,20 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Furkan Bacak's personal website and portfolio.">
+    <meta name="description" content="Landing page for Furkan Bacak's personal website.">
     <title>Furkan Bacak</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Welcome to Furkan Bacak's Personal Website</h1>
+        <div class="container">
+            <h1>Furkan Bacak</h1>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
     </header>
-    <main>
-        <section>
-            <p>Hello! I’m Furkan, a passionate developer and creator. This website showcases my projects, skills, and interests.</p>
-        </section>
-    </main>
-    <footer>
+
+    <section class="hero">
+        <h1>Welcome to My Website</h1>
+        <p>Discover my projects, skills, and journey.</p>
+        <a href="#about" class="cta-button">Learn More</a>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <p>Hi! I’m Furkan, a developer passionate about creating meaningful web experiences. This website showcases my work and interests.</p>
+    </section>
+
+    <section id="features" class="features">
+        <h2>What I Do</h2>
+        <div class="feature">
+            <h3>Web Development</h3>
+            <p>Building responsive and fast websites.</p>
+        </div>
+        <div class="feature">
+            <h3>Content Creation</h3>
+            <p>Writing blogs and creating engaging content.</p>
+        </div>
+        <div class="feature">
+            <h3>Open Source</h3>
+            <p>Contributing to open-source projects to give back to the community.</p>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>Contact me at: <a href="mailto:furkan@example.com">furkan@example.com</a></p>
+        <p>Follow me: <a href="#">Twitter</a> | <a href="#">LinkedIn</a></p>
         <p>© 2025 Furkan Bacak. All rights reserved.</p>
     </footer>
 </body>
