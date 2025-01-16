@@ -118,3 +118,12 @@ body {
     padding: 1rem;
     margin-top: 2rem;
 }
+
+/* Logo Image Styling */
+.logo-image {
+    height: 50px; /* Adjust the height as needed */
+    width: auto; /* Maintain the aspect ratio */
+    margin-right: 1rem; /* Add spacing between the logo and the navbar links */
+    display: inline-block; /* Ensure proper alignment */
+    vertical-align: middle; /* Align with text */
+}
