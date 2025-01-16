@@ -1,4 +1,4 @@
-# Furkan Bacak's Personal Website
+# Welcome!
 
 Welcome to the repository for [furkanbacak.com](https://furkanbacak.com), my personal website hosted on GitHub Pages.
 
