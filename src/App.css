@@ -31,20 +31,21 @@ a {
   text-align: center;
   background: linear-gradient(to bottom right, #6a11cb, #2575fc);
   color: white;
-  padding: 4rem 0; /* Removed horizontal padding */
-  width: 100%; /* Full width */
-  box-sizing: border-box; /* Include padding and borders in size */
+  padding: 4rem 2rem; /* Added small horizontal padding for better spacing */
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding fits within the section */
 }
 
 .hero-content {
   max-width: 1200px;
-  margin: 0 auto; /* Center the content */
-  padding: 0 1rem; /* Add padding for smaller screens */
+  margin: 0 auto;
+  padding: 0 1rem; /* Responsive padding for smaller screens */
 }
 
 .hero-section .logo {
   height: 100px;
-  margin-bottom: 1rem;
+  max-width: 100%; /* Ensure the logo scales on smaller screens */
+  margin-bottom: 1.5rem;
 }
 
 .hero-title {
@@ -74,9 +75,10 @@ a {
 
 /* About and Projects Sections */
 .section {
-  padding: 3rem 0; /* Removed horizontal padding */
+  padding: 3rem 1.5rem; /* Adjusted padding for better responsiveness */
   text-align: center;
-  max-width: 100%; /* Full width */
+  max-width: 1200px;
+  margin: 0 auto; /* Center the section content */
 }
 
 .about-section {
@@ -118,9 +120,9 @@ a {
   background: #333;
   color: white;
   text-align: center;
-  padding: 1.5rem 0; /* Removed horizontal padding */
+  padding: 1.5rem 1rem; /* Adjusted padding for consistency */
   font-size: 0.9rem;
-  width: 100%; /* Full width */
+  width: 100%;
 }
 
 /* Responsive Design */
@@ -148,6 +150,6 @@ a {
   }
 
   .section {
-    padding: 2rem 0;
+    padding: 2rem 1rem; /* Adjusted padding for smaller screens */
   }
 }
