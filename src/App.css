@@ -73,20 +73,32 @@ a {
   transform: scale(1.05);
 }
 
-/* About and Projects Sections */
-.section {
-  padding: 3rem 1.5rem; /* Adjusted padding for better responsiveness */
-  text-align: center;
-  max-width: 1200px;
-  margin: 0 auto; /* Center the section content */
-}
-
+/* About Section */
 .about-section {
   background-color: #fff;
+  padding: 3rem 1.5rem;
+  text-align: center;
 }
 
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.profile-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid #646cff;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Projects Section */
 .projects-section {
   background-color: #f1f3f6;
+  padding: 3rem 1.5rem;
 }
 
 .project-cards {
@@ -94,7 +106,7 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
-  padding: 0 1rem; /* Add padding for smaller screens */
+  padding: 0 1rem;
 }
 
 .project-card {
@@ -115,12 +127,78 @@ a {
   margin-bottom: 0.5rem;
 }
 
+/* Dino Game Section */
+.game-section {
+  background-color: #fff;
+  padding: 3rem 1.5rem;
+}
+
+.game-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-color: #f4f4f4;
+  overflow: hidden;
+  border: 2px solid #ddd;
+  margin: 2rem 0;
+}
+
+.player {
+  position: absolute;
+  bottom: 10px;
+  left: 50px;
+  width: 30px;
+  height: 30px;
+  background-color: #6a11cb;
+  border-radius: 5px;
+  transition: bottom 0.2s ease;
+}
+
+.player.jump {
+  bottom: 100px;
+}
+
+.obstacle {
+  position: absolute;
+  bottom: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: #ff6b6b;
+  animation: move 2s linear infinite;
+}
+
+.score {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.game-over {
+  text-align: center;
+}
+
+.game-over button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #6a11cb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.game-over button:hover {
+  background-color: #535bf2;
+}
+
 /* Footer */
 .footer {
   background: #333;
   color: white;
   text-align: center;
-  padding: 1.5rem 1rem; /* Adjusted padding for consistency */
+  padding: 1.5rem 1rem;
   font-size: 0.9rem;
   width: 100%;
 }
@@ -146,10 +224,14 @@ a {
 
   .project-cards {
     grid-template-columns: 1fr;
-    padding: 0; /* Remove padding for mobile */
   }
 
   .section {
-    padding: 2rem 1rem; /* Adjusted padding for smaller screens */
+    padding: 2rem 1rem;
+  }
+
+  .profile-photo {
+    width: 120px;
+    height: 120px;
   }
 }
