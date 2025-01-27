@@ -1,24 +1,31 @@
-/* Add spacing and card styles for Experience Section */
-.experience-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
-  }
-  
-  .experience-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-  }
-  
-  .experience-card h3 {
-    color: #2575fc;
-    margin-bottom: 0.5rem;
-  }
-  
-  .experience-card p {
-    color: #666;
-    margin: 0.5rem 0;
-  }
+/* Additional Styling */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.profile-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.container {
+  text-align: center;
+  margin: 20px auto;
+}
+
+.btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  color: #fff;
+  background: #007bff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
