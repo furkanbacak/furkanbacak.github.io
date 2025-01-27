@@ -7,8 +7,5 @@
   },
   "author": "Furkan Bacak",
   "license": "MIT",
-  "homepage": "https://furkanbacak.github.io",
-  "devDependencies": {
-    "gh-pages": "^5.0.0"
-  }
+  "homepage": "https://furkanbacak.github.io"
 }
