@@ -1,0 +1,14 @@
+{
+  "name": "furkanbacak.github.io",
+  "version": "1.0.0",
+  "description": "Furkan Bacak's personal website",
+  "scripts": {
+    "deploy": "gh-pages -d ."
+  },
+  "author": "Furkan Bacak",
+  "license": "MIT",
+  "homepage": "https://furkanbacak.github.io",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
+}
