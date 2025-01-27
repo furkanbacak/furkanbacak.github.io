@@ -1,43 +1,93 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Meta Information -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Welcome to Furkan Bacak's personal website, showcasing projects and insights." />
-    <meta name="keywords" content="Furkan Bacak, portfolio, web development, modern design, dino game" />
-    <meta name="author" content="Furkan Bacak" />
-    <meta name="robots" content="index, follow" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-
-    <!-- Open Graph for Social Media Sharing -->
-    <meta property="og:title" content="Furkan Bacak" />
-    <meta property="og:description" content="Welcome to Furkan Bacak's personal website, showcasing projects and insights." />
-    <meta property="og:image" content="/furkanbacak_profile.jpg" />
-    <meta property="og:url" content="https://furkanbacak.github.io/" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <!-- Title -->
-    <title>Furkan Bacak</title>
-
-    <!-- JavaScript and CSS -->
-    <script type="module" crossorigin src="/assets/index--HzZFq2G.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CXaQf8D9.css">
-
-    <!-- Fallback for Older Browsers -->
-    <script nomodule>
-      alert("This website requires a modern browser that supports ES Modules. Please update your browser.");
-    </script>
-  </head>
-  <body>
-    <!-- Root React Element -->
-    <div id="root">
-      <noscript>Please enable JavaScript to view this website.</noscript>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Furkan Bacak</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="images/logo.png" type="image/png">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="main-header">
+    <nav class="navbar">
+      <img src="images/logo.png" alt="Furkan Bacak Logo" class="logo">
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="hero">
+      <h1>Welcome to Furkan Bacak's Website</h1>
+      <p>Crafting intuitive and modern web experiences</p>
+      <a href="#about" class="cta-button">Learn More</a>
     </div>
+  </header>
 
-    <!-- Optional: Loading Indicator -->
-    <div class="loading" style="display: none;">Loading...</div>
-  </body>
+  <!-- About Section -->
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <p>
+      With a Master’s in Geodesy and Geoinformation Science and a Bachelor’s in Geomatics Engineering, I blend technical expertise with a passion for customer engagement and growth. Driven by curiosity and a love for innovation, I aim to deliver impactful and strategic customer-focused solutions.
+    </p>
+    <p><strong>Languages:</strong> Turkish (Native), English (Professional), German (Elementary)</p>
+    <p><strong>Certifications:</strong> ArcGIS Pro, Learning GitLab, Building Creative Online Communities</p>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience" class="section">
+    <h2>Experience</h2>
+    <div class="experience-cards">
+      <div class="experience-card">
+        <h3>Working Student, Developer Relations</h3>
+        <p><strong>Planet</strong> | Dec 2023 - Present</p>
+        <p>Enhancing developer engagement and ensuring smooth customer interactions in the geoinformation industry.</p>
+      </div>
+      <div class="experience-card">
+        <h3>Customer Engagement & Project Manager</h3>
+        <p><strong>Allyd.ai</strong> | Apr 2024 - Present</p>
+        <p>Spearheaded pre-launch engagement efforts and executed targeted cold email campaigns with a 70%+ open rate.</p>
+      </div>
+      <div class="experience-card">
+        <h3>Business Development Intern</h3>
+        <p><strong>MetalMaker 3D</strong> | Jan 2023 - Feb 2023</p>
+        <p>Conducted market research and generated outbound leads for potential business opportunities.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section">
+    <h2>Projects</h2>
+    <div class="project-container">
+      <div class="project-card">
+        <h3>Cold Email Campaigns</h3>
+        <p>Achieved 70%+ open rates, targeting strategic leads for Allyd.ai.</p>
+      </div>
+      <div class="project-card">
+        <h3>Geospatial Data Integration</h3>
+        <p>Worked on high-impact geoinformation projects at Planet, blending technical and relational expertise.</p>
+      </div>
+      <div class="project-card">
+        <h3>Customer Engagement Strategy</h3>
+        <p>Designed and implemented engagement strategies for Allyd.ai's pre-launch phase.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <h2>Contact Me</h2>
+    <p>Email: <a href="mailto:furkanbacak97@gmail.com">furkanbacak97@gmail.com</a></p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/furkanbacak/" target="_blank">Furkan Bacak</a></p>
+    <p>Medium: <a href="https://medium.com/@fbacak" target="_blank">@fbacak</a></p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Furkan Bacak. All rights reserved.</p>
+  </footer>
+</body>
 </html>
