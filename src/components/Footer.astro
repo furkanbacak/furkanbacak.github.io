@@ -1,0 +1,30 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300 bg-slate-50 dark:bg-slate-950/50">
+  <div class="mx-auto max-w-5xl px-6 py-12 flex flex-col items-center justify-between gap-6 sm:flex-row">
+    <div class="flex flex-col items-center gap-1 sm:items-start text-center sm:text-left">
+      <p class="text-base font-semibold text-slate-900 dark:text-slate-200">
+        Furkan Bacak
+      </p>
+      <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs">
+        Developer Relations & Technical Documentation. Empowering developers to build better products.
+      </p>
+    </div>
+    
+    <div class="flex flex-col items-center gap-4 sm:items-end">
+      <div class="flex gap-6 text-sm font-medium text-slate-500 dark:text-slate-400">
+        <a href="https://github.com/furkanbacak" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/furkanbacak" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          LinkedIn
+        </a>
+      </div>
+      <p class="text-xs text-slate-400 dark:text-slate-600">
+        &copy; {currentYear} All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

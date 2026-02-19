@@ -1,0 +1,55 @@
+---
+---
+
+<section id="about" class="py-20 scroll-mt-16">
+  <div class="mx-auto max-w-5xl px-6">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+      
+      <!-- Text Content -->
+      <div class="md:col-span-7 order-2 md:order-1">
+        <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50 mb-6">
+          About Me
+        </h2>
+        <div class="prose prose-slate dark:prose-invert prose-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p class="mb-4">
+            I specialize in bridging the gap between complex engineering concepts and seamless 
+            <strong class="font-semibold text-slate-900 dark:text-slate-200">Developer Experience (DX)</strong>. 
+            My background as a Product Designer and Frontend Developer allows me to approach developer tools with a product-first mindset.
+          </p>
+          <p>
+            Whether it's writing clear technical documentation, crafting product narratives, or growing a developer community, 
+            my goal is always enablement: ensuring developers have exactly what they need to succeed, without the friction.
+          </p>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-2">
+          {["DevRel", "Developer Experience", "Tech Docs", "Product Narrative", "Community", "Frontend"].map((skill) => (
+            <span class="inline-flex items-center rounded-md bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 ring-1 ring-inset ring-slate-500/10 dark:bg-slate-800/60 dark:text-slate-300 dark:ring-slate-500/20">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Profile Image Frame -->
+      <div class="md:col-span-5 order-1 md:order-2 flex justify-center md:justify-end">
+        <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-2xl overflow-hidden group">
+          <!-- Colorful backdrop giving a glassmorphic glow -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-emerald-500/10 dark:from-indigo-500/20 dark:to-emerald-500/20 rounded-2xl mix-blend-multiply opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-10"></div>
+          
+          <img 
+            src="/images/profile.jpg" 
+            alt="Furkan Bacak" 
+            class="w-full h-full object-cover object-center bg-slate-200 dark:bg-slate-800 transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+            onerror="this.src='/images/profile-placeholder.webp'"
+          />
+          
+          <!-- Glossy border overlay -->
+          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-slate-900/10 dark:ring-white/10 z-20 pointer-events-none"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

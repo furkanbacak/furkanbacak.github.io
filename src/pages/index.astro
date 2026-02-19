@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Footer from '../components/Footer.astro';
+
+// Import projects data
+import projectsData from '../data/projects.json';
+---
+
+<Layout title="Furkan Bacak | Developer Relations & Technical Documentation">
+  <Header />
+  
+  <main class="flex-auto">
+    <Hero />
+    
+    <About />
+
+    <section id="projects" class="py-24 scroll-mt-16 relative">
+      <div class="mx-auto max-w-5xl px-6 relative z-10">
+        <div class="mb-12 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div class="max-w-2xl">
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50 mb-4">
+              Selected Work
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400">
+              A diverse portfolio focusing on engaging user experience, precise technical execution, and strategic content delivery models.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3-Column Grid for Projects -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projectsData.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</Layout>
