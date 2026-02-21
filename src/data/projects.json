@@ -5,7 +5,7 @@
         "role": "Co-founder & Product",
         "description": "A community-driven platform for clubs and events mapping. Focused on engaging user experience and fast performance.",
         "url": "https://clubius.app/",
-        "thumbnail": "/images/projects/clubius-placeholder.webp"
+        "thumbnail": "/images/projects/clubius-thumbnail.png"
     },
     {
         "id": "frida-und-diego",
@@ -13,7 +13,7 @@
         "role": "Frontend & Strategy",
         "description": "Modern web strategy and interactive frontend implementation focusing on creative storytelling.",
         "url": "https://fridaunddiego.com/",
-        "thumbnail": "/images/projects/frida-placeholder.webp"
+        "thumbnail": "/images/projects/frida-thumbnail.png"
     },
     {
         "id": "core-coaching",
@@ -21,6 +21,6 @@
         "role": "Development & Design",
         "description": "Corporate coaching platform emphasizing trust, clarity, and seamless user experience.",
         "url": "https://www.corecoachingtraining.com/",
-        "thumbnail": "/images/projects/core-placeholder.webp"
+        "thumbnail": "/images/projects/cct-thumbnail.png"
     }
 ]
