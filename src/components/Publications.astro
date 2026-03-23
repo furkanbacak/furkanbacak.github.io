@@ -1,0 +1,56 @@
+---
+import publicationsData from '../data/publications.json';
+---
+
+<section id="publications" class="py-24 scroll-mt-16 bg-slate-50/50 dark:bg-slate-900/20">
+  <div class="mx-auto max-w-5xl px-6 relative z-10">
+    <div class="mb-12 text-center md:text-left">
+      <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50 mb-4">
+        Publications
+      </h2>
+      <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
+        Academic research, papers, and findings on spatial informatics and geodesy.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {publicationsData.map((pub) => (
+        <div class="group relative flex flex-col justify-between gap-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md dark:bg-slate-900 dark:ring-slate-800 dark:hover:ring-slate-700 sm:p-8">
+          <div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+              {pub.url ? (
+                <a href={pub.url} target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  {pub.title}
+                  <span class="absolute inset-0" aria-hidden="true" />
+                </a>
+              ) : (
+                pub.title
+              )}
+            </h3>
+            <div class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-4">
+              {pub.authors}
+            </div>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600 dark:text-slate-400">
+              <span class="font-medium text-slate-700 dark:text-slate-300">{pub.publisher}</span>
+              <span class="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+              <time datetime={pub.date}>{pub.date}</time>
+            </div>
+            {pub.description && (
+              <p class="mt-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                {pub.description}
+              </p>
+            )}
+          </div>
+          {pub.url && (
+            <div class="mt-2 flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400">
+              Read publication
+              <svg class="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
