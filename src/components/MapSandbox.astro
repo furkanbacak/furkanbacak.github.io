@@ -14,7 +14,7 @@
     <div class="game-frame">
       <div class="game-bar micro">
         <span><i></i> Local simulation</span>
-        <span id="signal-count">Sequence 0 / 3 · Moves 0 / 44</span>
+        <span id="signal-count">Sequence 0 / 3 · Moves 0 / 54</span>
         <span id="scanner-readout">Scanner 01 · NE</span>
         <button id="reset-map" type="button">Reset ↺</button>
       </div>
@@ -58,7 +58,7 @@
     let player = { x: 2, y: 5 };
     let collected = 0;
     let moves = 0;
-    const moveLimit = 44;
+    const moveLimit = 54;
     const targetCount = 3;
     let relayUnlocked = false;
     let signals = [];
@@ -182,7 +182,7 @@
       signals.forEach((signal, index) => {
         if (signal.hit) return;
         const distance = Math.abs(signal.x - player.x) + Math.abs(signal.y - player.y);
-        if (distance > 2) return;
+        if (distance > 3) return;
         const p = cellCenter(signal.x, signal.y);
         const pulse = 10 + Math.sin(animation * .045 + index) * 5;
         const glow = ctx.createRadialGradient(p.x, p.y, 1, p.x, p.y, pulse * 3.4);
@@ -237,7 +237,8 @@
       const vertical = dy < 0 ? 'N' : dy > 0 ? 'S' : '';
       const horizontal = dx > 0 ? 'E' : dx < 0 ? 'W' : '';
       const label = target.order === -1 ? 'RELAY' : `0${target.order}`;
-      scanner.textContent = `Scanner ${label} · ${vertical}${horizontal || 'HERE'}`;
+      const distance = Math.abs(dx) + Math.abs(dy);
+      scanner.textContent = `Scanner ${label} · ${vertical}${horizontal || 'HERE'} · ${distance} cells`;
     };
 
     const move = (direction) => {
@@ -350,5 +351,7 @@
     .desktop-hint { display: none; }
     .mobile-hint { display: inline; }
     .game-bar span:first-child { display: none; }
+    .game-bar { flex-wrap: wrap; font-size: .58rem; }
+    #scanner-readout { order: 3; flex-basis: 100%; padding-top: .65rem; border-top: 1px solid rgba(255,255,255,.08); color: var(--ice); }
   }
 </style>

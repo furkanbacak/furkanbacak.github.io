@@ -9,7 +9,7 @@
       <a href="#work">Work</a>
       <a href="#research">Research</a>
       <a class="signal" href="https://www.linkedin.com/in/furkanbacak/" target="_blank" rel="noopener noreferrer">
-        Start a signal <span>↗</span>
+        <span class="signal-label">Start a signal</span><span class="signal-arrow">↗</span>
       </a>
     </nav>
   </div>
@@ -25,9 +25,13 @@
   nav a { color: #aab0ab; font: 500 .68rem var(--font-mono); letter-spacing: .06em; text-decoration: none; text-transform: uppercase; transition: color .2s; }
   nav a:hover { color: white; }
   .signal { padding: .8rem 1rem; border: 1px solid rgba(223,255,94,.4); color: var(--acid); }
+  .signal-arrow { margin-left: .35rem; }
   @media (max-width: 740px) {
     nav a:not(.signal) { display: none; }
-    .signal { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; font-size: 0; }
-    .signal span { font-size: .85rem; }
+    nav { margin-left: auto; }
+    .signal { height: 38px; padding: 0 .8rem; display: flex; align-items: center; justify-content: center; font-size: .58rem; }
+    .signal-label { font-size: 0; }
+    .signal-label::after { content: "Contact"; font-size: .58rem; }
+    .signal-arrow { margin-left: .4rem; font-size: .72rem; }
   }
 </style>
