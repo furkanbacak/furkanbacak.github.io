@@ -1,0 +1,354 @@
+<section id="sandbox" class="section sandbox">
+  <div class="shell">
+    <div class="sandbox-head">
+      <div>
+        <div class="eyebrow">Spatial sandbox / Optional side quest</div>
+        <h2>Find the signal.</h2>
+      </div>
+      <p>
+        Decode the route. Recover nodes in the correct order.<br />
+        A wrong signal breaks the sequence.
+      </p>
+    </div>
+
+    <div class="game-frame">
+      <div class="game-bar micro">
+        <span><i></i> Local simulation</span>
+        <span id="signal-count">Sequence 0 / 3 · Moves 0 / 44</span>
+        <span id="scanner-readout">Scanner 01 · NE</span>
+        <button id="reset-map" type="button">Reset ↺</button>
+      </div>
+
+      <div class="map-wrap">
+        <canvas id="signal-map" width="1200" height="620" aria-label="Interactive map game. Use arrow keys or WASD to collect three signals."></canvas>
+        <div class="map-label label-a micro">Sector 01 / Mitte</div>
+        <div class="map-label label-b micro">52.5200° N</div>
+        <div id="game-message" class="game-message" aria-live="polite">
+          <span class="micro">Network restored</span>
+          <strong>You found the pattern.</strong>
+          <p>Complex systems become useful when their signals connect.</p>
+          <button type="button">Explore again ↺</button>
+        </div>
+      </div>
+
+      <div class="game-controls">
+        <p id="route-hint" class="micro"><span class="desktop-hint">WASD / arrow keys</span><span class="mobile-hint">Tap controls</span> · scanner gives direction, not distance</p>
+        <div class="dpad" aria-label="Movement controls">
+          <button type="button" data-move="up" aria-label="Move up">↑</button>
+          <button type="button" data-move="left" aria-label="Move left">←</button>
+          <button type="button" data-move="down" aria-label="Move down">↓</button>
+          <button type="button" data-move="right" aria-label="Move right">→</button>
+        </div>
+        <p class="micro">No data leaves this grid</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const canvas = document.querySelector('#signal-map');
+  if (canvas instanceof HTMLCanvasElement) {
+    const ctx = canvas.getContext('2d');
+    const counter = document.querySelector('#signal-count');
+    const message = document.querySelector('#game-message');
+    const resetButton = document.querySelector('#reset-map');
+    const replayButton = message?.querySelector('button');
+    const cols = 15;
+    const rows = 8;
+    let player = { x: 2, y: 5 };
+    let collected = 0;
+    let moves = 0;
+    const moveLimit = 44;
+    const targetCount = 3;
+    let relayUnlocked = false;
+    let signals = [];
+    let particles = [];
+    let animation = 0;
+    let running = false;
+    const blocked = new Set([
+      '5,3','5,4','5,5','5,6','5,7',
+      '9,0','9,1','9,2','9,3','9,4',
+      '10,4','12,4','13,4','14,4',
+      '1,2','2,2','7,5','7,6'
+    ]);
+
+    const seedSignals = () => {
+      signals = [
+        { x: 6, y: 2, hit: false, order: 1 },
+        { x: 13, y: 1, hit: false, order: 2 },
+        { x: 11, y: 5, hit: false, order: 3 },
+        { x: 3, y: 1, hit: false, order: -1 },
+        { x: 8, y: 7, hit: false, order: 0 }
+      ];
+    };
+
+    const reset = () => {
+      player = { x: 2, y: 5 };
+      collected = 0;
+      moves = 0;
+      relayUnlocked = false;
+      particles = [];
+      seedSignals();
+      message?.classList.remove('show');
+      if (counter) counter.textContent = `Sequence 0 / 3 · Moves 0 / ${moveLimit}`;
+      const hint = document.querySelector('#route-hint');
+      if (hint) hint.lastChild.textContent = ' · scanner gives direction, not distance';
+      updateScanner();
+      if (!running) {
+        running = true;
+        draw();
+      }
+    };
+
+    const burst = (x, y) => {
+      for (let i = 0; i < 20; i++) {
+        const angle = (Math.PI * 2 * i) / 20;
+        particles.push({ x, y, vx: Math.cos(angle) * (1 + Math.random() * 2), vy: Math.sin(angle) * (1 + Math.random() * 2), life: 35 });
+      }
+    };
+
+    const metrics = () => {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      return { width, height, cw: width / cols, ch: height / rows };
+    };
+
+    const cellCenter = (x, y) => {
+      const { cw, ch } = metrics();
+      return { x: x * cw + cw / 2, y: y * ch + ch / 2 };
+    };
+
+    const draw = () => {
+      if (!ctx) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const { width, height, cw, ch } = metrics();
+      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = '#090d0b';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.strokeStyle = 'rgba(255,255,255,.055)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= cols; x++) {
+        ctx.beginPath(); ctx.moveTo(x * cw, 0); ctx.lineTo(x * cw, height); ctx.stroke();
+      }
+      for (let y = 0; y <= rows; y++) {
+        ctx.beginPath(); ctx.moveTo(0, y * ch); ctx.lineTo(width, y * ch); ctx.stroke();
+      }
+
+      // A small abstract street network.
+      ctx.strokeStyle = 'rgba(141,232,255,.18)';
+      ctx.lineWidth = Math.max(7, cw * .09);
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      [[0,6],[3,6],[5,4],[8,4],[10,2],[15,2]].forEach(([x,y], i) => {
+        const p = cellCenter(x, y);
+        i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
+      });
+      ctx.stroke();
+      ctx.beginPath();
+      [[4,0],[4,3],[7,6],[7,8]].forEach(([x,y], i) => {
+        const p = cellCenter(x, y);
+        i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
+      });
+      ctx.stroke();
+
+      // Building footprints.
+      ctx.strokeStyle = 'rgba(255,255,255,.13)';
+      ctx.lineWidth = 1;
+      [[1,1,2,1],[7,1,2,2],[9,5,2,2],[12,3,2,1],[1,3,1,2],[5,6,2,1]].forEach(([x,y,w,h]) => {
+        ctx.strokeRect(x * cw + 8, y * ch + 8, w * cw - 16, h * ch - 16);
+      });
+
+      // Closed sectors form a small route-planning maze.
+      blocked.forEach((cell) => {
+        const [x, y] = cell.split(',').map(Number);
+        ctx.fillStyle = 'rgba(255,255,255,.075)';
+        ctx.fillRect(x * cw + 3, y * ch + 3, cw - 6, ch - 6);
+        ctx.strokeStyle = 'rgba(255,255,255,.16)';
+        ctx.beginPath();
+        ctx.moveTo(x * cw + 8, y * ch + 8);
+        ctx.lineTo((x + 1) * cw - 8, (y + 1) * ch - 8);
+        ctx.moveTo((x + 1) * cw - 8, y * ch + 8);
+        ctx.lineTo(x * cw + 8, (y + 1) * ch - 8);
+        ctx.stroke();
+      });
+
+      signals.forEach((signal, index) => {
+        if (signal.hit) return;
+        const distance = Math.abs(signal.x - player.x) + Math.abs(signal.y - player.y);
+        if (distance > 2) return;
+        const p = cellCenter(signal.x, signal.y);
+        const pulse = 10 + Math.sin(animation * .045 + index) * 5;
+        const glow = ctx.createRadialGradient(p.x, p.y, 1, p.x, p.y, pulse * 3.4);
+        const relayActive = signal.order === -1 && collected === 1 && !relayUnlocked;
+        const neutralizedDecoy = signal.order === 0 && relayUnlocked;
+        const active = signal.order === collected + 1 || relayActive;
+        glow.addColorStop(0, active ? 'rgba(223,255,94,.95)' : neutralizedDecoy ? 'rgba(255,111,91,.45)' : 'rgba(255,111,91,.85)');
+        glow.addColorStop(.18, active ? 'rgba(223,255,94,.42)' : neutralizedDecoy ? 'rgba(255,111,91,.14)' : 'rgba(255,111,91,.28)');
+        glow.addColorStop(1, active ? 'rgba(223,255,94,0)' : 'rgba(255,111,91,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(p.x, p.y, pulse * 3.4, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = neutralizedDecoy ? 'rgba(255,111,91,.38)' : active ? '#dfff5e' : 'rgba(255,111,91,.8)';
+        ctx.strokeRect(p.x - 6, p.y - 6, 12, 12);
+        ctx.fillStyle = neutralizedDecoy ? 'rgba(255,111,91,.48)' : active ? '#dfff5e' : 'rgba(255,111,91,.85)';
+        ctx.font = '10px "IBM Plex Mono"';
+        ctx.fillText(relayActive ? 'RELAY' : neutralizedDecoy ? 'CLEAR' : active ? `0${signal.order}` : '??', p.x + 12, p.y - 10);
+      });
+
+      particles = particles.filter((particle) => particle.life > 0);
+      particles.forEach((particle) => {
+        particle.x += particle.vx; particle.y += particle.vy; particle.life--;
+        ctx.fillStyle = `rgba(223,255,94,${particle.life / 35})`;
+        ctx.fillRect(particle.x, particle.y, 2, 2);
+      });
+
+      const p = cellCenter(player.x, player.y);
+      ctx.strokeStyle = '#8de8ff';
+      ctx.fillStyle = 'rgba(141,232,255,.17)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 13, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p.x - 21, p.y); ctx.lineTo(p.x + 21, p.y); ctx.moveTo(p.x, p.y - 21); ctx.lineTo(p.x, p.y + 21); ctx.stroke();
+
+      const fog = ctx.createRadialGradient(p.x, p.y, Math.min(cw, ch) * 1.2, p.x, p.y, Math.max(cw, ch) * 4.4);
+      fog.addColorStop(0, 'rgba(7,9,8,0)');
+      fog.addColorStop(.52, 'rgba(7,9,8,.25)');
+      fog.addColorStop(1, 'rgba(7,9,8,.88)');
+      ctx.fillStyle = fog;
+      ctx.fillRect(0, 0, width, height);
+
+      animation++;
+      requestAnimationFrame(draw);
+    };
+
+    const updateScanner = () => {
+      const scanner = document.querySelector('#scanner-readout');
+      const target = collected === 1 && !relayUnlocked
+        ? signals.find((signal) => signal.order === -1)
+        : signals.find((signal) => signal.order === collected + 1);
+      if (!scanner || !target) return;
+      const dx = target.x - player.x;
+      const dy = target.y - player.y;
+      const vertical = dy < 0 ? 'N' : dy > 0 ? 'S' : '';
+      const horizontal = dx > 0 ? 'E' : dx < 0 ? 'W' : '';
+      const label = target.order === -1 ? 'RELAY' : `0${target.order}`;
+      scanner.textContent = `Scanner ${label} · ${vertical}${horizontal || 'HERE'}`;
+    };
+
+    const move = (direction) => {
+      if (message?.classList.contains('show')) return;
+      if (moves >= moveLimit) {
+        reset();
+        return;
+      }
+      const next = { ...player };
+      if (direction === 'up') next.y = Math.max(0, next.y - 1);
+      if (direction === 'down') next.y = Math.min(rows - 1, next.y + 1);
+      if (direction === 'left') next.x = Math.max(0, next.x - 1);
+      if (direction === 'right') next.x = Math.min(cols - 1, next.x + 1);
+      moves++;
+      const hint = document.querySelector('#route-hint');
+      if (blocked.has(`${next.x},${next.y}`)) {
+        if (hint) hint.lastChild.textContent = ' · sector closed — find another route';
+      } else {
+        player = next;
+      }
+
+      signals.forEach((signal) => {
+        if (!signal.hit && signal.x === player.x && signal.y === player.y) {
+          if (signal.order === 0) {
+            if (relayUnlocked) {
+              signal.hit = true;
+              if (hint) hint.lastChild.textContent = ' · neutralized decoy ignored — sequence preserved';
+            } else {
+              signals.forEach((node) => { if (node.order > 0) node.hit = false; });
+              collected = 0;
+              if (hint) hint.lastChild.textContent = ' · armed decoy triggered — sequence erased';
+            }
+          } else if (signal.order === -1 && collected === 1 && !relayUnlocked) {
+            signal.hit = true;
+            relayUnlocked = true;
+            const p = cellCenter(signal.x, signal.y);
+            burst(p.x, p.y);
+            if (hint) hint.lastChild.textContent = ' · relay linked — entrance decoy neutralized';
+          } else if (signal.order === collected + 1) {
+            signal.hit = true;
+            collected++;
+            const p = cellCenter(signal.x, signal.y);
+            burst(p.x, p.y);
+            if (hint) hint.lastChild.textContent = collected < targetCount ? ` · signal locked — scan for 0${collected + 1}` : ' · route decoded';
+            if (collected === targetCount) setTimeout(() => message?.classList.add('show'), 350);
+          } else if (relayUnlocked) {
+            if (hint) hint.lastChild.textContent = ' · inactive red node ignored — sequence preserved';
+          } else {
+            signals.forEach((node) => { if (node.order > 0) node.hit = false; });
+            collected = 0;
+            if (hint) hint.lastChild.textContent = ' · decoy triggered — sequence erased';
+          }
+        }
+      });
+      if (counter) counter.textContent = `Sequence ${collected} / 3 · Moves ${moves} / ${moveLimit}`;
+      updateScanner();
+      if (moves >= moveLimit && collected < 3) {
+        const hint = document.querySelector('#route-hint');
+        if (hint) hint.lastChild.textContent = ' · route expired — move once to reset';
+      }
+    };
+
+    document.addEventListener('keydown', (event) => {
+      const keys = { ArrowUp: 'up', w: 'up', W: 'up', ArrowDown: 'down', s: 'down', S: 'down', ArrowLeft: 'left', a: 'left', A: 'left', ArrowRight: 'right', d: 'right', D: 'right' };
+      const direction = keys[event.key];
+      if (direction && document.querySelector('#sandbox:hover')) {
+        event.preventDefault();
+        move(direction);
+      }
+    });
+    document.querySelectorAll('[data-move]').forEach((button) => button.addEventListener('click', () => move(button.getAttribute('data-move'))));
+    resetButton?.addEventListener('click', reset);
+    replayButton?.addEventListener('click', reset);
+    reset();
+  }
+</script>
+
+<style>
+  .sandbox { overflow: hidden; background: #080a09; }
+  .sandbox-head { display: flex; justify-content: space-between; align-items: end; gap: 3rem; margin-bottom: 3rem; }
+  .sandbox-head h2 { margin: 1.3rem 0 0; font-size: clamp(3.5rem, 8vw, 8rem); line-height: .85; letter-spacing: -.07em; font-weight: 500; }
+  .sandbox-head > p { max-width: 420px; margin: 0; color: var(--muted); line-height: 1.65; }
+  .game-frame { border: 1px solid rgba(255,255,255,.14); background: #090d0b; box-shadow: 0 30px 100px rgba(0,0,0,.35); }
+  .game-bar, .game-controls { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1.1rem; }
+  .game-bar { border-bottom: 1px solid rgba(255,255,255,.12); color: #808883; }
+  .game-bar span:first-child { display: flex; align-items: center; gap: .65rem; }
+  .game-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 12px var(--acid); }
+  .game-bar button, .game-message button { color: inherit; background: none; border: 0; cursor: pointer; font: inherit; text-transform: uppercase; }
+  #signal-count { color: var(--acid); }
+  .map-wrap { position: relative; }
+  #signal-map { display: block; width: 100%; height: min(52vw, 620px); min-height: 380px; touch-action: none; }
+  .map-label { position: absolute; color: rgba(141,232,255,.55); pointer-events: none; }
+  .label-a { left: 1rem; top: 1rem; }
+  .label-b { right: 1rem; bottom: 1rem; }
+  .game-controls { border-top: 1px solid rgba(255,255,255,.12); color: #737b75; }
+  .dpad { display: flex; gap: .45rem; }
+  .dpad button { width: 38px; height: 34px; color: #bac2bc; background: #101512; border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: .2s; }
+  .dpad button:hover, .dpad button:active { color: #070908; background: var(--acid); border-color: var(--acid); }
+  .mobile-hint { display: none; }
+  .game-message { position: absolute; z-index: 5; inset: 50% auto auto 50%; width: min(440px, calc(100% - 30px)); padding: 2.2rem; opacity: 0; pointer-events: none; transform: translate(-50%, -44%); background: rgba(9,13,11,.95); border: 1px solid var(--acid); box-shadow: 0 0 80px rgba(223,255,94,.13); backdrop-filter: blur(14px); transition: .35s; }
+  .game-message.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
+  .game-message > span { color: var(--acid); }
+  .game-message strong { display: block; margin: 1rem 0; font-size: 2.1rem; letter-spacing: -.04em; }
+  .game-message p { color: var(--muted); line-height: 1.6; }
+  .game-message button { margin-top: 1rem; padding: .8rem 1rem; color: #070908; background: var(--acid); }
+  @media (max-width: 720px) {
+    .sandbox-head { align-items: start; flex-direction: column; }
+    #signal-map { height: 470px; min-height: 0; }
+    .game-controls > p:last-child { display: none; }
+    .desktop-hint { display: none; }
+    .mobile-hint { display: inline; }
+    .game-bar span:first-child { display: none; }
+  }
+</style>

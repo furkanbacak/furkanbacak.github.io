@@ -2,55 +2,63 @@
 import publicationsData from '../data/publications.json';
 ---
 
-<section id="publications" class="py-24 scroll-mt-16 bg-slate-50/50 dark:bg-slate-900/20">
-  <div class="mx-auto max-w-5xl px-6 relative z-10">
-    <div class="mb-12 text-center md:text-left">
-      <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50 mb-4">
-        Publications
-      </h2>
-      <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
-        Academic research, papers, and findings on spatial informatics and geodesy.
-      </p>
+<section id="research" class="section research grid-noise">
+  <div class="shell">
+    <div class="eyebrow reveal">Research / 003</div>
+    <h2 class="section-title reveal">Observe deeply.<br /><span class="ghost">Explain clearly.</span></h2>
+
+    <div class="thesis reveal">
+      <div class="thesis-map" aria-hidden="true">
+        <div class="roof roof-a"></div><div class="roof roof-b"></div><div class="roof roof-c"></div>
+        <span class="micro">LiDAR sample / roof topology</span>
+      </div>
+      <div class="thesis-copy">
+        <span class="micro">Master's thesis · TU Berlin · In progress</span>
+        <h3>Efficient and explainable roof intelligence from airborne LiDAR.</h3>
+        <p>
+          Comparing geometric machine learning and point-based deep learning for
+          roof-type classification—looking beyond accuracy toward interpretability,
+          compute cost and real-world robustness.
+        </p>
+        <div class="thesis-tags micro"><span>118K buildings</span><span>Point clouds</span><span>Explainable AI</span></div>
+      </div>
     </div>
 
-    <div class="space-y-6">
-      {publicationsData.map((pub) => (
-        <div class="group relative flex flex-col justify-between gap-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md dark:bg-slate-900 dark:ring-slate-800 dark:hover:ring-slate-700 sm:p-8">
-          <div>
-            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-              {pub.url ? (
-                <a href={pub.url} target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  {pub.title}
-                  <span class="absolute inset-0" aria-hidden="true" />
-                </a>
-              ) : (
-                pub.title
-              )}
-            </h3>
-            <div class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-4">
-              {pub.authors}
-            </div>
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600 dark:text-slate-400">
-              <span class="font-medium text-slate-700 dark:text-slate-300">{pub.publisher}</span>
-              <span class="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-              <time datetime={pub.date}>{pub.date}</time>
-            </div>
-            {pub.description && (
-              <p class="mt-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                {pub.description}
-              </p>
-            )}
-          </div>
-          {pub.url && (
-            <div class="mt-2 flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400">
-              Read publication
-              <svg class="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-              </svg>
-            </div>
-          )}
-        </div>
+    <div class="publication-list reveal">
+      {publicationsData.map((pub, index) => (
+        <a href={pub.url} target="_blank" rel="noopener noreferrer">
+          <span class="micro">0{index + 1} / {pub.date.slice(-4)}</span>
+          <strong>{pub.title}</strong>
+          <span>{pub.publisher}</span>
+          <i>↗</i>
+        </a>
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  .research { background-color: #090c0a; }
+  .thesis { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; border: 1px solid rgba(255,255,255,.13); background: rgba(7,9,8,.84); }
+  .thesis-map { position: relative; overflow: hidden; background: radial-gradient(circle at center, rgba(141,232,255,.13), transparent 55%); border-right: 1px solid rgba(255,255,255,.13); }
+  .thesis-map::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(141,232,255,.5) 1px, transparent 1px); background-size: 18px 18px; mask-image: radial-gradient(circle, black, transparent 72%); }
+  .thesis-map > span { position: absolute; left: 1.3rem; bottom: 1.2rem; color: var(--ice); }
+  .roof { position: absolute; border: 1px solid var(--acid); transform: rotate(30deg) skew(-18deg); box-shadow: 0 0 35px rgba(223,255,94,.09); }
+  .roof::after { content: ""; position: absolute; inset: 50% -40% auto; border-top: 1px solid rgba(223,255,94,.55); }
+  .roof-a { width: 180px; height: 120px; left: 27%; top: 25%; }
+  .roof-b { width: 100px; height: 80px; left: 57%; top: 48%; opacity: .55; }
+  .roof-c { width: 75px; height: 55px; left: 20%; top: 62%; opacity: .35; }
+  .thesis-copy { align-self: center; padding: clamp(2rem, 6vw, 5rem); }
+  .thesis-copy > span { color: var(--acid); }
+  .thesis-copy h3 { margin: 1.6rem 0; font-size: clamp(2rem, 4vw, 4.2rem); line-height: 1; letter-spacing: -.05em; font-weight: 500; }
+  .thesis-copy p { color: var(--muted); line-height: 1.75; }
+  .thesis-tags { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2rem; }
+  .thesis-tags span { padding: .6rem .7rem; border: 1px solid rgba(255,255,255,.13); color: #bfc4bf; }
+  .publication-list { margin-top: 5rem; border-top: 1px solid rgba(255,255,255,.15); }
+  .publication-list a { display: grid; grid-template-columns: 8rem 1fr 12rem 2rem; gap: 1.5rem; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,.11); text-decoration: none; transition: color .25s, padding .25s; }
+  .publication-list a > span { color: #737b75; }
+  .publication-list strong { font-size: 1.05rem; font-weight: 500; }
+  .publication-list i { color: var(--acid); font-style: normal; }
+  .publication-list a:hover { color: var(--acid); padding-left: .5rem; }
+  @media (max-width: 760px) { .thesis { grid-template-columns: 1fr; } .thesis-map { min-height: 320px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.13); } .publication-list a { grid-template-columns: 4rem 1fr 2rem; } .publication-list a > span:nth-of-type(2) { display: none; } }
+</style>

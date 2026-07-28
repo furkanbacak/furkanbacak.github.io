@@ -2,49 +2,49 @@
 import '../styles/global.css';
 
 interface Props {
-	title: string;
-	description?: string;
+  title: string;
+  description?: string;
 }
 
-const { title, description = "Furkan's personal portfolio. Developer Relations and Technical Documentation focus." } = Astro.props;
+const {
+  title,
+  description = 'Furkan Bacak — geospatial engineer and developer advocate translating complex systems into useful products and clear stories.'
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/png" href="/favicon.png" />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<meta name="generator" content={Astro.generator} />
-		
-		<!-- Google Fonts: Inter -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-		
-		<!-- Theme initialization script to prevent Flash of Unstyled Content -->
-		<script is:inline>
-			const theme = (() => {
-				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-					return localStorage.getItem('theme');
-				}
-				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-					return 'dark';
-				}
-				return 'light';
-			})();
-			
-			if (theme === 'dark') {
-				document.documentElement.classList.add('dark');
-			} else {
-				document.documentElement.classList.remove('dark');
-			}
-			window.localStorage.setItem('theme', theme);
-		</script>
-	</head>
-	<body class="flex min-h-screen flex-col">
-		<slot />
-	</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070908" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <slot />
+    <script is:inline>
+      const items = document.querySelectorAll('.reveal');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        items.forEach((item) => observer.observe(item));
+      } else {
+        items.forEach((item) => item.classList.add('visible'));
+      }
+    </script>
+  </body>
 </html>

@@ -1,34 +1,112 @@
----
----
-
-<section class="relative pt-24 pb-16 sm:pt-32 sm:pb-24 overflow-hidden">
-  <div class="mx-auto max-w-5xl px-6 relative z-10 text-center sm:text-left">
-    <div class="max-w-2xl">
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 mb-6 drop-shadow-sm">
-        Hi, I'm <span class="text-indigo-600 dark:text-indigo-400">Furkan.</span>
+<section id="top" class="hero grid-noise">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="hero-vignette"></div>
+  <div class="shell hero-inner">
+    <div class="hero-copy">
+      <div class="status micro"><span></span> Berlin / available for meaningful systems</div>
+      <h1>
+        I make complex<br />
+        systems <em>legible.</em>
       </h1>
-      
-      <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed max-w-xl mx-auto sm:mx-0">
-        Berlin-based <span class="font-semibold text-slate-800 dark:text-slate-200">Geospatial Engineer</span> & <span class="font-semibold text-slate-800 dark:text-slate-200">Developer Relations Specialist</span>. I build technical documentation, create product narratives, and write code to help developers navigate complex APIs.
+      <p>
+        Geospatial engineer and developer advocate working across
+        <strong>maps, APIs, products and people.</strong>
       </p>
-
-      <div class="flex flex-col sm:flex-row gap-4 items-center sm:items-start justify-center sm:justify-start">
-        <a href="#projects" class="inline-flex h-12 w-full sm:w-auto items-center justify-center rounded-xl bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-500 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:focus:ring-offset-slate-950">
-          View Projects
-        </a>
-        <a href="https://www.linkedin.com/in/furkanbacak/" target="_blank" rel="noopener noreferrer" class="inline-flex h-12 w-full sm:w-auto items-center justify-center rounded-xl bg-white px-8 py-3 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 transition-all hover:bg-slate-50 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-950">
-          Get in Touch
-        </a>
-        <a href="https://medium.com/@fbacak" target="_blank" rel="noopener noreferrer" class="inline-flex h-12 w-full sm:w-auto items-center justify-center rounded-xl bg-white px-8 py-3 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 transition-all hover:bg-slate-50 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-950">
-          Read Blog
-        </a>
+      <div class="hero-actions">
+        <a class="primary" href="#work">Explore selected work <span>↓</span></a>
+        <a href="https://github.com/furkanbacak" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a href="https://medium.com/@fbacak" target="_blank" rel="noopener noreferrer">Writing ↗</a>
       </div>
     </div>
-  </div>
 
-  <!-- Abstract decorative background element -->
-  <div class="absolute right-0 top-0 -z-10 w-full sm:w-1/2 h-full opacity-30 dark:opacity-20 pointer-events-none">
-    <div class="absolute -right-20 top-20 h-72 w-72 rounded-full bg-indigo-400/30 blur-3xl dark:bg-indigo-600/20"></div>
-    <div class="absolute right-40 top-40 h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl dark:bg-emerald-600/20"></div>
+    <aside class="telemetry" aria-label="Current focus">
+      <div class="telemetry-head micro"><span>Live context</span><span>2026.07</span></div>
+      <div class="coordinate">
+        <span>52.5200° N</span><span>13.4050° E</span>
+      </div>
+      <div class="telemetry-row"><span>01</span><strong>Spatial intelligence</strong><i>ACTIVE</i></div>
+      <div class="telemetry-row"><span>02</span><strong>Developer experience</strong><i>ACTIVE</i></div>
+      <div class="telemetry-row"><span>03</span><strong>Technical narrative</strong><i>ACTIVE</i></div>
+    </aside>
   </div>
+  <div class="scroll micro">Scroll to decode <span>↓</span></div>
 </section>
+
+<script>
+  const canvas = document.querySelector('#field');
+  if (canvas instanceof HTMLCanvasElement) {
+    const ctx = canvas.getContext('2d');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let w = 0, h = 0, frame = 0;
+    let points = [];
+    const resize = () => {
+      const dpr = Math.min(devicePixelRatio, 2);
+      w = canvas.clientWidth; h = canvas.clientHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+      points = Array.from({ length: Math.min(150, Math.floor(w / 7)) }, (_, i) => ({
+        x: w * (.51 + Math.random() * .47),
+        y: h * (.08 + Math.random() * .79),
+        z: Math.random(),
+        p: i * .45 + Math.random() * 4
+      }));
+    };
+    const draw = () => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, w, h);
+      points.forEach((pt) => {
+        const drift = reduce ? 0 : Math.sin(frame * .006 + pt.p) * 16;
+        const x = pt.x + drift * pt.z;
+        const y = pt.y + Math.cos(frame * .004 + pt.p) * 8;
+        ctx.fillStyle = pt.z > .82 ? 'rgba(223,255,94,.9)' : `rgba(141,232,255,${.12 + pt.z * .42})`;
+        ctx.fillRect(x, y, 1 + pt.z * 2.2, 1 + pt.z * 2.2);
+        if (pt.z > .73) {
+          ctx.strokeStyle = 'rgba(141,232,255,.09)';
+          ctx.beginPath(); ctx.moveTo(x - 12, y); ctx.lineTo(x + 12, y); ctx.stroke();
+        }
+      });
+      frame++;
+      if (!reduce) requestAnimationFrame(draw);
+    };
+    resize(); draw();
+    window.addEventListener('resize', resize);
+  }
+</script>
+
+<style>
+  .hero { min-height: 100svh; position: relative; overflow: hidden; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,.1); }
+  #field { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .82; }
+  .hero-vignette { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(7,9,8,.98) 0%, rgba(7,9,8,.85) 40%, rgba(7,9,8,.1) 78%), linear-gradient(0deg, var(--ink), transparent 22%); }
+  .hero-inner { position: relative; z-index: 2; padding-top: 8rem; }
+  .hero-copy { max-width: 940px; }
+  .status { color: #a8afaa; display: flex; align-items: center; gap: .8rem; margin-bottom: 2.5rem; }
+  .status span { width: 8px; height: 8px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 20px var(--acid); animation: pulse 2s ease-in-out infinite; }
+  h1 { margin: 0; max-width: 1040px; font-size: clamp(4rem, 9.5vw, 9.2rem); line-height: .82; font-weight: 500; letter-spacing: -.075em; }
+  h1 em { color: transparent; -webkit-text-stroke: 1px rgba(223,255,94,.8); font-style: normal; }
+  .hero-copy > p { max-width: 580px; color: #a7ada8; margin: 2.8rem 0 0; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.55; }
+  .hero-copy p strong { color: #f4f5f1; font-weight: 500; }
+  .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1.6rem; margin-top: 2.2rem; }
+  .hero-actions a { color: #aeb4af; text-decoration: none; font: 500 .72rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; }
+  .hero-actions .primary { display: flex; justify-content: space-between; align-items: center; min-width: 255px; padding: 1.1rem 1.25rem; color: #070908; background: var(--acid); }
+  .telemetry { position: absolute; right: 0; bottom: -8rem; width: 390px; background: rgba(9,13,11,.8); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(16px); }
+  .telemetry-head, .coordinate, .telemetry-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .telemetry-head { color: #707772; }
+  .coordinate { color: var(--ice); font: 400 .75rem var(--font-mono); }
+  .telemetry-row { gap: 1rem; font-size: .76rem; }
+  .telemetry-row > span { color: #56605a; font: 400 .64rem var(--font-mono); }
+  .telemetry-row strong { margin-right: auto; font-weight: 500; }
+  .telemetry-row i { color: var(--acid); font: normal .55rem var(--font-mono); }
+  .scroll { position: absolute; z-index: 2; left: 24px; bottom: 24px; color: #69706c; writing-mode: vertical-rl; }
+  .scroll span { color: var(--acid); margin-top: .6rem; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  @media (max-width: 900px) { .telemetry { display: none; } .hero-vignette { background: linear-gradient(90deg, rgba(7,9,8,.97), rgba(7,9,8,.6)); } }
+  @media (max-width: 700px) {
+    .hero { min-height: 840px; }
+    .hero-inner { padding-top: 5rem; }
+    .scroll { display: none; }
+    h1 { font-size: clamp(3.7rem, 18vw, 6rem); }
+    .hero-copy > p { max-width: 100%; font-size: 1rem; overflow-wrap: anywhere; }
+    .hero-actions { align-items: stretch; gap: 1rem 1.4rem; }
+    .hero-actions .primary { flex-basis: 100%; min-width: 0; }
+  }
+</style>
